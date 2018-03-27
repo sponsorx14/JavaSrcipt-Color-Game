@@ -1,33 +1,122 @@
-var mode = 6;
-var colors = generateRandomColors(mode);
-var squares = document.querySelectorAll(".square");
-var pickedColor = pickColor();
-var colorDisplay = document.getElementById("colorDisplay");
-var messageDisplay = document.querySelector("#message");
-var h1 = document.querySelector("h1");
-var reset = document.querySelector("#reset");
-var easy = document.querySelector("#easy");
-var hard = document.querySelector("#hard");
-var ez = document.querySelectorAll(".ez");
+const squares = document.querySelectorAll(".square");
+const colorDisplay = document.getElementById("colorDisplay");
+const messageDisplay = document.querySelector("#message");
+const h1 = document.querySelector("h1");
+const reset = document.querySelector("#reset");
+const easy = document.querySelector("#easy");
+const hard = document.querySelector("#hard");
+const ez = document.querySelectorAll(".ez");
+const chancesContainer = document.querySelector('.chances');
+
+let hardModeOn = true;
+let easyModeOn = false;
+let chances = 6;
+let mode = 6;
+let colors = generateRandomColors(mode);
+let pickedColor = pickColor();
 
 
 colorDisplay.textContent = pickedColor;
+chancesContainer.textContent = chances;
 
-for(var i = 0; i < squares.length; i++){
-	// add initial colors to squares
+function changeColors(color) {
+	for(let i = 0; i < squares.length; i++) {
+		squares[i].style.background = color;
+	}
+}
+
+function pickColor() {
+	let random = Math.floor(Math.random() * colors.length);
+	return colors[random];
+}
+
+function generateRandomColors(num){
+    let arr = [];
+    for(let i = 0; i<num; i++){
+        arr.push(randomColor());
+    }
+    return arr;
+}
+
+function randomColor(){
+    let r = Math.floor(Math.random() * 256);
+    let g = Math.floor(Math.random() * 256);
+    let b = Math.floor(Math.random() * 256);
+    return "rgb(" + r + ", " + g +", " + b +")";
+}
+
+function calcChances() {
+	if(hardModeOn) {
+		 return chances = 6
+	} else {
+		return chances = 3;
+	}
+}
+
+function easyMode(){
+		hardModeOn = false;
+		easyModeOn = true;
+		calcChances();
+    mode = 3;
+    colors = generateRandomColors(mode);
+    pickedColor = pickColor();
+    colorDisplay.textContent = pickedColor;
+    for (let i = 0; i<squares.length; i++){
+        if(colors[i]){
+            squares[i].style.background = colors[i];
+        }
+        else(
+            squares[i].style.display= "none"
+        );
+    };
+    h1.style.backgroundColor= "#4286f4";
+    messageDisplay.textContent = "";
+		chancesContainer.textContent = chances;
+}
+
+function hardMode(){
+		easyModeOn = false;
+		hardModeOn = true;
+		calcChances();
+    mode = 6;
+    colors = generateRandomColors(mode);
+    pickedColor = pickColor();
+    colorDisplay.textContent = pickedColor;
+    for(let i = 0; i < squares.length; i++){
+			squares[i].style.background = colors[i];
+    	squares[i].style.display="block"
+    }
+    h1.style.backgroundColor= "#4286f4";
+    messageDisplay.textContent = "";
+		chancesContainer.textContent = chances;
+}
+
+function resett(){
+		calcChances();
+		chancesContainer.textContent = chances;
+    colors = generateRandomColors(mode);
+    pickedColor = pickColor();
+    colorDisplay.textContent = pickedColor;
+    for(let i = 0; i < squares.length; i++){
+			squares[i].style.background = colors[i];
+    }
+    h1.style.backgroundColor= "#4286f4";
+    reset.textContent="New Game";
+    messageDisplay.textContent = "";
+};
+
+for(let i = 0; i < squares.length; i++){
 	squares[i].style.background = colors[i];
-
-	//add click listeners to squares
 	squares[i].addEventListener("click", function() {
-		//grab color of clicked squares
-		var clickedColor = this.style.background;
-		//compare color to pickedColor
+		const clickedColor = this.style.background;
 		if(clickedColor === pickedColor) {
 			messageDisplay.textContent = "Correct!";
 			changeColors(clickedColor);
-            h1.style.background = clickedColor;
-            reset.textContent= "Play Again?"
+      h1.style.background = clickedColor;
+      reset.textContent= "Play Again?";
 		} else {
+			chances -=1;
+			chancesContainer.textContent = chances;
 			this.style.background = "#232323";
 			messageDisplay.textContent = "Try Again";
 		}
@@ -47,79 +136,5 @@ hard.addEventListener("click", function(){
 easy.addEventListener("click", function(){
     hard.classList.remove("selected");
     easy.classList.add("selected");
-    easyMode();                
+    easyMode();
 });
-
-
-
-function changeColors(color) {
-	//loop through all squares
-	for(var i = 0; i < squares.length; i++) {
-		//change each color to match given color
-		squares[i].style.background = color;
-	}
-}
-
-function pickColor() {
-	var random = Math.floor(Math.random() * colors.length);
-	return colors[random];
-}
-
-function generateRandomColors(num){
-    var arr = [];
-    for(var i = 0; i<num; i++){
-        arr.push(randomColor());
-    }
-    
-    return arr;
-};
-
-function randomColor(){
-    var r = Math.floor(Math.random() * 256);
-    var g = Math.floor(Math.random() * 256);        
-    var b = Math.floor(Math.random() * 256);
-    return "rgb(" + r + ", " + g +", " + b +")";
-};
-
-function easyMode(){
-    mode = 3; 
-    colors = generateRandomColors(mode);
-    pickedColor = pickColor();
-    colorDisplay.textContent = pickedColor;
-    for (var i = 0; i<squares.length; i++){
-        if(colors[i]){
-            squares[i].style.backgroundColor=colors[i];
-        }
-        else(
-            squares[i].style.display= "none"
-        );
-    };
-    h1.style.backgroundColor= "steelblue";
-    messageDisplay.textContent = "";
-};
-
-function hardMode(){
-    mode = 6;
-    colors = generateRandomColors(mode);
-    pickedColor = pickColor();
-    colorDisplay.textContent = pickedColor;
-    for(var i = 0; i < squares.length; i++){
-	squares[i].style.background = colors[i];
-    squares[i].style.display="block"    
-    };
-    h1.style.backgroundColor= "steelblue";
-    messageDisplay.textContent = "";
-};
-
-function resett(){
-    colors = generateRandomColors(mode);
-    pickedColor = pickColor();
-    colorDisplay.textContent = pickedColor;
-    for(var i = 0; i < squares.length; i++){
-	squares[i].style.background = colors[i];
-    }
-    h1.style.backgroundColor= "steelblue";
-    reset.textContent="New Game";
-    messageDisplay.textContent = "";
-};
-

@@ -5,25 +5,35 @@
 	<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-<h1>
-	The Great <span id="colorDisplay">RGB</span> Color Game
-</h1>
+	<header>
+		<h1>
+			The Great <span id="colorDisplay">RGB</span> Color Game
+		</h1>
+	</header>
+	<main>
+		<div id="stripe" class="stripe">
+		  <button id="reset" class='reset'>New Game</button>
+			<span id="message" class='message'></span>
+			<button id="easy" class='easy'>Easy</button>
+			<button id="hard" class="selected hard">Hard</button>
+		</div>
+	</main>
+	<section class='squaresContainer'>
+		<div id="container" class="container">
+			<div class="square threemode"></div>
+			<div class="square threemode"></div>
+			<div class="square threemode"></div>
+			<div class="square"></div>
+			<div class="square"></div>
+			<div class="square"></div>
+		</div>
+	</section>
+	<footer>
+		<div class='chancesContainer'>
+			<p>Your chances left: <span class="chances"></span></p>
+		</div>
+	</footer>
 
-<div id="stripe">
-    <button id="reset">New Game</button>
-	<span id="message"></span>
-	<button id="easy">Easy</button>
-	<button id="hard" class="selected">Hard</button>
-</div>
-
-<div id="container">
-	<div class="square threemode"></div>
-	<div class="square threemode"></div>
-	<div class="square threemode"></div>
-	<div class="square ez"></div>
-	<div class="square ez"></div>
-	<div class="square ez"></div>
-</div>
 
 <script type="text/javascript" src="main.js"></script>
 </body>
